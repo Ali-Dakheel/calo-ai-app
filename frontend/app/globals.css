@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Cal Sans', 'Inter', system-ui, sans-serif;
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-calo-light text-calo-dark;
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+  
+  /* Glass Effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg;
+  }
+  
+  /* Card Styles */
+  .card {
+    @apply bg-white rounded-2xl shadow-soft border border-gray-100;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-medium hover:-translate-y-1;
+  }
+  
+  /* Button Styles */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply bg-calo-primary text-white;
+    @apply hover:bg-green-600 focus:ring-calo-primary;
+  }
+  
+  .btn-secondary {
+    @apply bg-calo-secondary text-white;
+    @apply hover:bg-amber-600 focus:ring-calo-secondary;
+  }
+  
+  .btn-outline {
+    @apply bg-white text-calo-dark border border-gray-300;
+    @apply hover:bg-gray-50 focus:ring-gray-300;
+  }
+  
+  /* Input Styles */
+  .input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-calo-primary focus:border-transparent;
+    @apply transition-all duration-200;
+  }
+  
+  /* Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .badge-green {
+    @apply bg-green-100 text-green-700;
+  }
+  
+  .badge-orange {
+    @apply bg-orange-100 text-orange-700;
+  }
+  
+  .badge-blue {
+    @apply bg-blue-100 text-blue-700;
+  }
+  
+  .badge-red {
+    @apply bg-red-100 text-red-700;
+  }
+  
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-calo-primary to-green-600 bg-clip-text text-transparent;
+  }
+  
+  /* Loading Animation */
+  .loading-dots span {
+    animation: loadingDots 1.4s infinite ease-in-out both;
+  }
+  
+  .loading-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+  
+  .loading-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+  
+  @keyframes loadingDots {
+    0%, 80%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    40% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+}

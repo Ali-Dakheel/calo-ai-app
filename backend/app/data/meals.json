@@ -1,0 +1,171 @@
+[
+  {
+    "id": "meal_001",
+    "name": "Grilled Chicken Quinoa Bowl",
+    "description": "Tender grilled chicken breast served over fluffy quinoa with roasted vegetables and tahini dressing",
+    "category": "lunch",
+    "dietary_tags": [
+      "high_protein",
+      "gluten_free",
+      "halal"
+    ],
+    "nutrition": {
+      "calories": 450,
+      "protein": 35,
+      "carbs": 45,
+      "fats": 12,
+      "fiber": 8,
+      "sodium": 520
+    },
+    "ingredients": [
+      "chicken breast",
+      "quinoa",
+      "bell peppers",
+      "zucchini",
+      "tahini",
+      "lemon",
+      "garlic"
+    ],
+    "allergens": [
+      "sesame"
+    ],
+    "preparation_time": 25,
+    "price": 12.99,
+    "popularity_score": 0.92
+  },
+  {
+    "id": "meal_002",
+    "name": "Mediterranean Falafel Wrap",
+    "description": "Crispy baked falafel with fresh vegetables, hummus, and cucumber yogurt sauce in whole wheat wrap",
+    "category": "lunch",
+    "dietary_tags": [
+      "vegetarian",
+      "high_protein"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein": 18,
+      "carbs": 52,
+      "fats": 16,
+      "fiber": 12,
+      "sodium": 480
+    },
+    "ingredients": [
+      "chickpeas",
+      "whole wheat wrap",
+      "cucumber",
+      "tomato",
+      "lettuce",
+      "hummus",
+      "yogurt"
+    ],
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "preparation_time": 20,
+    "price": 10.99,
+    "popularity_score": 0.88
+  },
+  {
+    "id": "meal_003",
+    "name": "Salmon Teriyaki with Brown Rice",
+    "description": "Pan-seared salmon glazed with homemade teriyaki sauce, served with steamed brown rice and edamame",
+    "category": "dinner",
+    "dietary_tags": [
+      "high_protein",
+      "dairy_free"
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein": 38,
+      "carbs": 48,
+      "fats": 18,
+      "fiber": 6,
+      "sodium": 620
+    },
+    "ingredients": [
+      "salmon",
+      "brown rice",
+      "edamame",
+      "soy sauce",
+      "ginger",
+      "garlic",
+      "honey"
+    ],
+    "allergens": [
+      "fish",
+      "soy"
+    ],
+    "preparation_time": 30,
+    "price": 15.99,
+    "popularity_score": 0.95
+  },
+  {
+    "id": "meal_004",
+    "name": "Keto Beef and Veggie Stir Fry",
+    "description": "Tender beef strips with low-carb vegetables in savory sauce, served over cauliflower rice",
+    "category": "dinner",
+    "dietary_tags": [
+      "keto",
+      "low_carb",
+      "high_protein",
+      "gluten_free",
+      "halal"
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein": 32,
+      "carbs": 12,
+      "fats": 24,
+      "fiber": 4,
+      "sodium": 540
+    },
+    "ingredients": [
+      "beef sirloin",
+      "cauliflower",
+      "broccoli",
+      "bell peppers",
+      "coconut aminos",
+      "sesame oil"
+    ],
+    "allergens": [],
+    "preparation_time": 25,
+    "price": 14.99,
+    "popularity_score": 0.85
+  },
+  {
+    "id": "meal_005",
+    "name": "Vegan Buddha Bowl",
+    "description": "Colorful bowl with roasted chickpeas, sweet potato, kale, quinoa, and creamy tahini dressing",
+    "category": "lunch",
+    "dietary_tags": [
+      "vegan",
+      "gluten_free",
+      "high_protein"
+    ],
+    "nutrition": {
+      "calories": 410,
+      "protein": 16,
+      "carbs": 58,
+      "fats": 14,
+      "fiber": 14,
+      "sodium": 420
+    },
+    "ingredients": [
+      "chickpeas",
+      "sweet potato",
+      "kale",
+      "quinoa",
+      "tahini",
+      "lemon",
+      "olive oil"
+    ],
+    "allergens": [
+      "sesame"
+    ],
+    "preparation_time": 30,
+    "price": 11.99,
+    "popularity_score": 0.9
+  }
+]
