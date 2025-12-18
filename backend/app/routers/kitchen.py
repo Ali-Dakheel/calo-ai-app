@@ -2,16 +2,27 @@
 Kitchen Router - Special requests and custom orders
 """
 from fastapi import APIRouter, HTTPException
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 import uuid
 
 from app.models.feedback import KitchenRequest
+from app.services.seed_data import get_demo_kitchen_requests
 
 router = APIRouter()
 
 # In-memory storage for demo (use database in production)
 kitchen_requests: dict[str, KitchenRequest] = {}
+
+
+def _load_seed_data():
+    """Load demo data for presentation"""
+    for request in get_demo_kitchen_requests():
+        kitchen_requests[request.request_id] = request
+
+
+# Load seed data on module import
+_load_seed_data()
 
 
 @router.post("/request")

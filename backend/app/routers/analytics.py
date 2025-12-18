@@ -15,12 +15,23 @@ from app.models.feedback import (
 )
 from app.services.llm_service import generate_structured_output
 from app.prompts.agent_prompts import get_feedback_analysis_prompt, FEEDBACK_ANALYZER_SYSTEM
+from app.services.seed_data import get_demo_feedbacks
 
 router = APIRouter()
 
 # In-memory storage for demo
 feedbacks: dict[str, CustomerFeedback] = {}
 analyses: dict[str, FeedbackAnalysis] = {}
+
+
+def _load_seed_data():
+    """Load demo data for presentation"""
+    for feedback in get_demo_feedbacks():
+        feedbacks[feedback.id] = feedback
+
+
+# Load seed data on module import
+_load_seed_data()
 
 
 @router.post("/feedback")
