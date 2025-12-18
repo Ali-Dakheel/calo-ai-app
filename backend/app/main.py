@@ -1,27 +1,36 @@
 """
 Calo AI Nutrition Advisor - FastAPI Main Application
 """
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.routers import chat, recommendations, kitchen, analytics
-from app.services.rag_service import initialize_rag_engine
+from app.services.rag_service import initialize_rag_engine, meal_collection
+from app.services.llm_service import check_ollama_health
+from app.config import get_settings
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+settings = get_settings()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage startup and shutdown events"""
     # Startup: Initialize RAG engine with meal data
-    print("🚀 Initializing Calo AI Advisor...")
+    logger.info("Initializing Calo AI Advisor...")
     await initialize_rag_engine()
-    print("✅ RAG Engine initialized successfully")
-    
+    logger.info("RAG Engine initialized successfully")
+
     yield
-    
+
     # Shutdown: Cleanup if needed
-    print("👋 Shutting down Calo AI Advisor...")
+    logger.info("Shutting down Calo AI Advisor...")
 
 
 app = FastAPI(
@@ -34,7 +43,7 @@ app = FastAPI(
 # CORS middleware for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -53,13 +62,23 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """Detailed health check"""
+    """Detailed health check with real service verification"""
+    # Check Ollama LLM service
+    ollama_healthy = await check_ollama_health()
+
+    # Check RAG service (ChromaDB collection)
+    rag_healthy = meal_collection is not None
+
+    # Determine overall status
+    all_healthy = ollama_healthy and rag_healthy
+    status = "healthy" if all_healthy else "degraded"
+
     return {
-        "status": "healthy",
+        "status": status,
         "services": {
             "api": "operational",
-            "llm": "operational",
-            "rag": "operational"
+            "llm": "operational" if ollama_healthy else "unavailable",
+            "rag": "operational" if rag_healthy else "unavailable"
         }
     }
 

@@ -5,7 +5,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Clock, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { Clock, AlertCircle, CheckCircle } from 'lucide-react';
 import { api } from '@/lib/api';
 import {
   formatRelativeTime,
@@ -15,9 +15,10 @@ import {
   formatStatus,
   cn,
 } from '@/lib/utils';
+import { ErrorState } from './ErrorState';
 
-export function KitchenDashboard() {
-  const { data, isLoading } = useQuery({
+export const KitchenDashboard = () => {
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['kitchen-dashboard'],
     queryFn: () => api.getKitchenDashboard(),
     refetchInterval: 30000, // Refetch every 30 seconds
@@ -25,13 +26,27 @@ export function KitchenDashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="loading-dots flex gap-2">
+      <div
+        className="flex items-center justify-center h-64"
+        role="status"
+        aria-label="Loading kitchen dashboard"
+      >
+        <div className="loading-dots flex gap-2" aria-hidden="true">
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
         </div>
+        <span className="sr-only">Loading kitchen dashboard...</span>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorState
+        message={error instanceof Error ? error.message : 'Failed to load kitchen dashboard'}
+        onRetry={() => refetch()}
+      />
     );
   }
 

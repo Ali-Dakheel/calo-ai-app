@@ -5,25 +5,40 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { TrendingUp, TrendingDown, Minus, Star } from 'lucide-react';
+import { TrendingUp, TrendingDown, Star } from 'lucide-react';
 import { api } from '@/lib/api';
 import { cn, getSentimentEmoji } from '@/lib/utils';
+import { ErrorState } from './ErrorState';
 
-export function AnalyticsPanel() {
-  const { data, isLoading } = useQuery({
+export const AnalyticsPanel = () => {
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['analytics-summary'],
     queryFn: () => api.getAnalyticsSummary({ days: 30 }),
   });
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="loading-dots flex gap-2">
+      <div
+        className="flex items-center justify-center h-64"
+        role="status"
+        aria-label="Loading analytics"
+      >
+        <div className="loading-dots flex gap-2" aria-hidden="true">
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
           <span className="w-3 h-3 bg-calo-primary rounded-full"></span>
         </div>
+        <span className="sr-only">Loading analytics...</span>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorState
+        message={error instanceof Error ? error.message : 'Failed to load analytics'}
+        onRetry={() => refetch()}
+      />
     );
   }
 

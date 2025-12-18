@@ -5,11 +5,19 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from typing import AsyncGenerator
 
-from app.models.chat import ChatRequest, ChatResponse
-from app.services.agent_service import process_message
+from app.models.chat import (
+    ChatRequest,
+    ChatResponse,
+    ChatMessageResponse,
+    ConversationHistoryResponse,
+    DeleteConversationResponse,
+)
+from app.services.agent_service import process_message, conversations
 from app.services.llm_service import check_ollama_health
+from app.config import get_settings
 
 router = APIRouter()
+settings = get_settings()
 
 
 @router.post("/", response_model=ChatResponse)
@@ -92,7 +100,7 @@ async def chat_stream(request: ChatRequest):
             
             # Simulate streaming by chunking response
             response_text = result["message"]
-            chunk_size = 20  # words per chunk
+            chunk_size = settings.stream_chunk_size
             
             words = response_text.split()
             for i in range(0, len(words), chunk_size):
@@ -111,55 +119,50 @@ async def chat_stream(request: ChatRequest):
     )
 
 
-@router.get("/history/{conversation_id}")
-async def get_conversation_history(conversation_id: str):
+@router.get("/history/{conversation_id}", response_model=ConversationHistoryResponse)
+async def get_conversation_history(conversation_id: str) -> ConversationHistoryResponse:
     """
     Get conversation history
-    
+
     Args:
         conversation_id: Conversation identifier
-        
+
     Returns:
         List of messages in conversation
     """
-    # Import conversations from agent_service
-    from app.services.agent_service import conversations
-    
     if conversation_id not in conversations:
         raise HTTPException(status_code=404, detail="Conversation not found")
-    
+
     history = conversations[conversation_id]
-    
-    return {
-        "conversation_id": conversation_id,
-        "message_count": len(history),
-        "messages": [
-            {
-                "role": msg.role,
-                "content": msg.content,
-                "timestamp": msg.timestamp.isoformat()
-            }
+
+    return ConversationHistoryResponse(
+        conversation_id=conversation_id,
+        message_count=len(history),
+        messages=[
+            ChatMessageResponse(
+                role=msg.role,
+                content=msg.content,
+                timestamp=msg.timestamp.isoformat()
+            )
             for msg in history
         ]
-    }
+    )
 
 
-@router.delete("/history/{conversation_id}")
-async def delete_conversation(conversation_id: str):
+@router.delete("/history/{conversation_id}", response_model=DeleteConversationResponse)
+async def delete_conversation(conversation_id: str) -> DeleteConversationResponse:
     """
     Delete a conversation
-    
+
     Args:
         conversation_id: Conversation to delete
-        
+
     Returns:
         Success message
     """
-    from app.services.agent_service import conversations
-    
     if conversation_id not in conversations:
         raise HTTPException(status_code=404, detail="Conversation not found")
-    
+
     del conversations[conversation_id]
-    
-    return {"message": "Conversation deleted successfully"}
+
+    return DeleteConversationResponse(message="Conversation deleted successfully")

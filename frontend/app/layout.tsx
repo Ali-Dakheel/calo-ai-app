@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   description: 'Intelligent meal recommendations and feedback analysis powered by AI',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <html lang="en">
       <body className={inter.variable}>
@@ -25,4 +25,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

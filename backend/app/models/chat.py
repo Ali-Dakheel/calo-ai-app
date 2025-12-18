@@ -45,3 +45,22 @@ class StreamingChunk(BaseModel):
     chunk: str
     is_final: bool = False
     metadata: Optional[dict] = None
+
+
+class ChatMessageResponse(BaseModel):
+    """Chat message response for API"""
+    role: Literal["user", "assistant", "system"]
+    content: str
+    timestamp: str
+
+
+class ConversationHistoryResponse(BaseModel):
+    """Response model for conversation history endpoint"""
+    conversation_id: str
+    message_count: int
+    messages: List[ChatMessageResponse]
+
+
+class DeleteConversationResponse(BaseModel):
+    """Response model for delete conversation endpoint"""
+    message: str

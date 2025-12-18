@@ -10,7 +10,7 @@ import { KitchenDashboard } from '@/components/KitchenDashboard';
 import { AnalyticsPanel } from '@/components/AnalyticsPanel';
 import { cn } from '@/lib/utils';
 
-export default function Home() {
+const Home = () => {
   const { activeTab, setActiveTab } = useUIStore();
 
   const tabs = [
@@ -48,8 +48,12 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Tab Navigation */}
-        <div className="mb-6">
-          <div className="inline-flex items-center gap-2 p-1 bg-white rounded-xl shadow-soft border border-gray-100">
+        <nav className="mb-6" aria-label="Main navigation">
+          <div
+            className="inline-flex items-center gap-2 p-1 bg-white rounded-xl shadow-soft border border-gray-100"
+            role="tablist"
+            aria-label="Dashboard sections"
+          >
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -57,33 +61,59 @@ export default function Home() {
               return (
                 <button
                   key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`tabpanel-${tab.id}`}
+                  id={`tab-${tab.id}`}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200',
+                    'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-calo-primary',
                     isActive
                       ? 'bg-calo-primary text-white shadow-md'
                       : 'text-gray-600 hover:bg-gray-50'
                   )}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4" aria-hidden="true" />
                   {tab.label}
                 </button>
               );
             })}
           </div>
-        </div>
+        </nav>
 
         {/* Tab Content */}
         <div className="animate-fade-in">
-          {activeTab === 'chat' && (
-            <div className="max-w-4xl mx-auto">
-              <ChatInterface />
-            </div>
-          )}
+          <div
+            role="tabpanel"
+            id="tabpanel-chat"
+            aria-labelledby="tab-chat"
+            hidden={activeTab !== 'chat'}
+          >
+            {activeTab === 'chat' && (
+              <div className="max-w-4xl mx-auto">
+                <ChatInterface />
+              </div>
+            )}
+          </div>
 
-          {activeTab === 'kitchen' && <KitchenDashboard />}
+          <div
+            role="tabpanel"
+            id="tabpanel-kitchen"
+            aria-labelledby="tab-kitchen"
+            hidden={activeTab !== 'kitchen'}
+          >
+            {activeTab === 'kitchen' && <KitchenDashboard />}
+          </div>
 
-          {activeTab === 'analytics' && <AnalyticsPanel />}
+          <div
+            role="tabpanel"
+            id="tabpanel-analytics"
+            aria-labelledby="tab-analytics"
+            hidden={activeTab !== 'analytics'}
+          >
+            {activeTab === 'analytics' && <AnalyticsPanel />}
+          </div>
         </div>
 
         {/* Footer Info */}
@@ -98,4 +128,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;

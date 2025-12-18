@@ -4,11 +4,9 @@
  */
 'use client';
 
-import { Heart, Clock, DollarSign, Flame, TrendingUp } from 'lucide-react';
+import { Clock, DollarSign, Flame, TrendingUp } from 'lucide-react';
 import type { Meal } from '@/lib/api';
 import {
-  formatCalories,
-  formatMacros,
   formatPrice,
   getDietaryTagColor,
   formatDietaryTag,
@@ -22,15 +20,26 @@ interface MealCardProps {
   showDetails?: boolean;
 }
 
-export function MealCard({ meal, onClick, showDetails = false }: MealCardProps) {
+export const MealCard = ({ meal, onClick, showDetails = false }: MealCardProps) => {
   const hasFallbackImage = !meal.image_url;
   const mealImage = meal.image_url || '/placeholder-meal.jpg';
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+      e.preventDefault();
+      onClick();
+    }
+  };
 
   return (
     <div
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={onClick ? 0 : undefined}
+      role={onClick ? 'button' : undefined}
+      aria-label={onClick ? `View details for ${meal.name}` : undefined}
       className={cn(
-        'card overflow-hidden transition-all duration-200',
+        'card overflow-hidden transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-calo-primary',
         onClick && 'cursor-pointer card-hover'
       )}
     >
@@ -186,9 +195,12 @@ export function MealCard({ meal, onClick, showDetails = false }: MealCardProps) 
           </div>
 
           {onClick && (
-            <button className="text-sm font-medium text-calo-primary hover:text-green-600 transition-colors">
+            <span
+              className="text-sm font-medium text-calo-primary hover:text-green-600 transition-colors"
+              aria-hidden="true"
+            >
               View Details →
-            </button>
+            </span>
           )}
         </div>
       </div>
