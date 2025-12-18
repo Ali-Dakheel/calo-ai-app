@@ -42,15 +42,24 @@ export const AnalyticsPanel = () => {
     );
   }
 
-  const summary = data || {
+  const defaultSummary = {
     total_feedback: 0,
     average_rating: 0,
     sentiment_breakdown: { positive: 0, neutral: 0, negative: 0 },
-    top_complaints: [],
-    top_praises: [],
-    popular_meals: [],
-    action_items: [],
+    top_complaints: [] as string[],
+    top_praises: [] as string[],
+    popular_meals: [] as string[],
+    action_items: [] as string[],
     time_period: 'Last 30 days',
+  };
+
+  const summary = {
+    ...defaultSummary,
+    ...data,
+    sentiment_breakdown: {
+      ...defaultSummary.sentiment_breakdown,
+      ...data?.sentiment_breakdown,
+    },
   };
 
   const totalSentiments =
